@@ -83,24 +83,8 @@ export class App implements OnInit {
     can_manage_users: false
   });
 
-  async ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      await Promise.all([
-        this.fetchNotifications(),
-        this.fetchPermissions()
-      ]);
-      
-      // Refresh notifications on route change (e.g., after login)
-      this.router.events.pipe(
-        filter(event => event instanceof NavigationEnd)
-      ).subscribe(() => {
-        this.fetchNotifications();
-        this.fetchPermissions();
-      });
-
-      // Poll for new notifications every minute
-      setInterval(() => this.fetchNotifications(), 60000);
-    }
+  ngOnInit() {
+    console.log('App initialized');
   }
 
   async fetchNotifications() {

@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "dev": "cross-env ng serve --port=3000 --host=0.0.0.0 --disable-host-check --define=\"GEMINI_API_KEY=\\'${GEMINI_API_KEY}\\'\" --define=\"SUPABASE_URL=\\'${SUPABASE_URL}\\'\" --define=\"SUPABASE_ANON_KEY=\\'${SUPABASE_ANON_KEY}\\'\" ${DISABLE_HMR:+--live-reload=false}",
+    "dev": "cross-env ng serve --host=0.0.0.0 --port=3000 --disable-host-check --define=GEMINI_API_KEY=\"'${GEMINI_API_KEY}'\" --define=SUPABASE_URL=\"'${SUPABASE_URL}'\" --define=SUPABASE_ANON_KEY=\"'${SUPABASE_ANON_KEY}'\"",
     "build": "cross-env ng build --define=\"GEMINI_API_KEY=\\'${GEMINI_API_KEY}\\'\" --define=\"SUPABASE_URL=\\'${SUPABASE_URL}\\'\" --define=\"SUPABASE_ANON_KEY=\\'${SUPABASE_ANON_KEY}\\'\"",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
@@ -35,6 +35,7 @@
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "unrar-js": "^0.2.3",
+    "ws": "^8.20.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
@@ -44,6 +45,7 @@
     "@tailwindcss/postcss": "^4.1.12",
     "@types/express": "^5.0.1",
     "@types/node": "^20.17.19",
+    "@types/ws": "^8.18.1",
     "angular-eslint": "21.1.0",
     "cross-env": "^10.1.0",
     "eslint": "^9.39.1",

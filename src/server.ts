@@ -1,3 +1,11 @@
+import WebSocket from 'ws';
+
+// Shim WebSocket for Node.js < 22 (required by Supabase Realtime)
+if (typeof global !== 'undefined' && !global.WebSocket) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (global as any).WebSocket = WebSocket;
+}
+
 import {
   AngularNodeAppEngine,
   createNodeRequestHandler,
