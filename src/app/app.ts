@@ -16,6 +16,19 @@ interface Notification {
   isRead?: boolean;
 }
 
+interface DBNotification {
+  id: string;
+  title: string;
+  message: string;
+  created_at: string;
+  target_type: 'all' | 'specific';
+  target_users: string[];
+}
+
+interface DBRead {
+  notification_id: string;
+}
+
 interface UserPermission {
   can_view_dashboard: boolean;
   can_view_converter: boolean;
@@ -107,7 +120,7 @@ export class App implements OnInit {
 
       if (notes) {
         // 2. Fetch read status for these notifications
-        const noteIds = notes.map((n: any) => n.id);
+        const noteIds = (notes as DBNotification[]).map(n => n.id);
         const { data: reads, error: readsError } = await supabase
           .from('xml_notification_reads')
           .select('notification_id')
@@ -116,9 +129,9 @@ export class App implements OnInit {
 
         if (readsError) throw readsError;
 
-        const readIds = new Set(reads?.map((r: any) => r.notification_id) || []);
+        const readIds = new Set((reads as DBRead[] | null)?.map(r => r.notification_id) || []);
         
-        const newNotes = notes.map((n: any) => ({
+        const newNotes = (notes as DBNotification[]).map(n => ({
           id: n.id,
           title: n.title,
           message: n.message,
@@ -129,7 +142,7 @@ export class App implements OnInit {
         }));
 
         this.notifications.set(newNotes);
-        this.unreadCount.set(newNotes.filter((n: any) => !n.isRead).length);
+        this.unreadCount.set(newNotes.filter(n => !n.isRead).length);
       }
     } catch (error) {
       console.error('Error fetching notifications:', error);

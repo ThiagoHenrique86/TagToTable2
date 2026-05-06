@@ -350,7 +350,7 @@ export class Converter {
       const zip = await JSZip.loadAsync(file);
       let xmlFound = false;
       for (const [name, entry] of Object.entries(zip.files)) {
-        const zipEntry = entry as any;
+        const zipEntry = entry;
         if (!zipEntry.dir && name.toLowerCase().endsWith('.xml')) {
           const content = await zipEntry.async('string');
           this.addFileEntry(name, content.length, content);

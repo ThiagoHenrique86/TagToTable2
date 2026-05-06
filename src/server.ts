@@ -140,7 +140,7 @@ app.post('/api/notify-admin-forgot-password', async (req, res) => {
       return res.status(500).json({ error: 'Erro ao buscar administradores/gerentes.' });
     }
 
-    const staffEmails = staff?.map((s: any) => s.email) || [];
+    const staffEmails = (staff as { email: string }[] | null)?.map(s => s.email) || [];
 
     if (staffEmails.length === 0) {
       return res.status(500).json({ error: 'Nenhum administrador ou gerente encontrado no sistema.' });

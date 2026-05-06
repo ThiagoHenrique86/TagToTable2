@@ -52,23 +52,23 @@ import {supabase} from './supabase';
           <form [formGroup]="settingsForm" (ngSubmit)="onSubmit()" class="p-8 space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-2">
-                <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Nome Completo</label>
-                <input formControlName="name" type="text" class="w-full bg-surface-container-low border-0 ring-1 ring-outline-variant/30 rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary text-sm transition-shadow">
+                <label for="name" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Nome Completo</label>
+                <input id="name" formControlName="name" type="text" class="w-full bg-surface-container-low border-0 ring-1 ring-outline-variant/30 rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary text-sm transition-shadow">
               </div>
               
               <div class="space-y-2">
-                <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">E-mail</label>
-                <input formControlName="email" type="email" readonly class="w-full bg-surface-container-low/50 border-0 ring-1 ring-outline-variant/30 rounded-xl py-3 px-4 text-sm text-on-surface-variant cursor-not-allowed">
+                <label for="email" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">E-mail</label>
+                <input id="email" formControlName="email" type="email" readonly class="w-full bg-surface-container-low/50 border-0 ring-1 ring-outline-variant/30 rounded-xl py-3 px-4 text-sm text-on-surface-variant cursor-not-allowed">
               </div>
               
               <div class="space-y-2">
-                <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">CPF</label>
-                <input formControlName="cpf" type="text" class="w-full bg-surface-container-low border-0 ring-1 ring-outline-variant/30 rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary text-sm transition-shadow">
+                <label for="cpf" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">CPF</label>
+                <input id="cpf" formControlName="cpf" type="text" class="w-full bg-surface-container-low border-0 ring-1 ring-outline-variant/30 rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary text-sm transition-shadow">
               </div>
               
               <div class="space-y-2">
-                <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Telefone</label>
-                <input formControlName="phone" type="text" class="w-full bg-surface-container-low border-0 ring-1 ring-outline-variant/30 rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary text-sm transition-shadow">
+                <label for="phone" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Telefone</label>
+                <input id="phone" formControlName="phone" type="text" class="w-full bg-surface-container-low border-0 ring-1 ring-outline-variant/30 rounded-xl py-3 px-4 focus:ring-2 focus:ring-primary text-sm transition-shadow">
               </div>
             </div>
 
