@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-headline: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-primary: #001944;
+  --color-primary-container: #002c6e;
+  --color-on-primary: #ffffff;
+  --color-background: #f8f9fb;
+  --color-surface: #f8f9fb;
+  --color-surface-container-low: #f2f4f6;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-high: #e6e8ea;
+  --color-on-surface: #191c1e;
+  --color-on-surface-variant: #454652;
+  --color-outline-variant: #c6c5d4;
+  --color-tertiary-fixed: #a3f4bc;
+  --color-tertiary-fixed-dim: #88d8a1;
+  --color-tertiary-container: #00381d;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-fixed-variant: #00522d;
+}
+
+@layer base {
+  body {
+    @apply bg-background font-sans text-on-surface antialiased;
+  }
+}
+
+.upload-pattern {
+  background-image: radial-gradient(circle at 2px 2px, var(--color-outline-variant) 1px, transparent 0);
+  background-size: 24px 24px;
+}

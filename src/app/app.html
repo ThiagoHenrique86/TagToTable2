@@ -1,0 +1,140 @@
+<div class="min-h-screen bg-background">
+  <!-- Top Bar -->
+  @if (isLoggedIn()) {
+    <header class="fixed top-0 w-full flex justify-between items-center px-4 md:px-6 h-16 bg-white/80 backdrop-blur-md z-50 shadow-sm">
+      <div class="flex items-center gap-4 md:gap-8">
+        <button (click)="toggleSidebar()" class="md:hidden p-2 hover:bg-surface-container-low transition-colors rounded-full text-primary">
+          <mat-icon>{{ isSidebarOpen() ? 'close' : 'menu' }}</mat-icon>
+        </button>
+        <span class="text-lg md:text-xl font-bold bg-gradient-to-r from-primary to-primary-container bg-clip-text text-transparent font-headline tracking-tight">TagToTable</span>
+        <nav class="hidden md:flex gap-6 font-headline font-semibold tracking-tight text-sm">
+          @for (item of menuItems; track item.path) {
+            @if (item.roles.includes(getUserRole())) {
+              <a [routerLink]="item.path" routerLinkActive="text-primary border-b-2 border-primary" [routerLinkActiveOptions]="{exact: item.path === '/'}" class="text-on-surface-variant hover:text-primary transition-colors pb-1">{{ item.label }}</a>
+            }
+          }
+        </nav>
+      </div>
+      <div class="flex items-center gap-2 md:gap-4 text-primary">
+        <div class="relative">
+          <button (click)="toggleNotifications()" class="p-2 hover:bg-surface-container-low transition-colors rounded-full relative">
+            <mat-icon>notifications</mat-icon>
+            @if (unreadCount() > 0) {
+              <span class="absolute -top-0.5 -right-0.5 min-w-[16px] h-[16px] bg-red-600 text-white text-[9px] font-bold flex items-center justify-center rounded-full px-1 border-2 border-white shadow-sm">
+                {{ unreadCount() > 9 ? '9+' : unreadCount() }}
+              </span>
+            }
+          </button>
+
+          <!-- Notification Dropdown -->
+          @if (isNotificationOpen()) {
+            <div class="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-outline-variant/10 overflow-hidden z-[60] animate-in fade-in slide-in-from-top-2 duration-200">
+              <div class="p-4 border-b border-outline-variant/10 bg-surface-container-low/30 flex justify-between items-center">
+                <h3 class="font-headline font-bold text-primary">Notificações</h3>
+                @if (unreadCount() > 0) {
+                  <span class="text-[10px] font-bold bg-primary text-on-primary px-2 py-0.5 rounded-full">{{unreadCount()}} novas</span>
+                }
+              </div>
+              <div class="max-h-96 overflow-y-auto">
+                @for (note of notifications(); track note.id) {
+                  <div (click)="markAsRead(note.id)" 
+                       (keydown.enter)="markAsRead(note.id)"
+                       tabindex="0"
+                       role="button"
+                       class="p-4 border-b border-outline-variant/5 hover:bg-surface-container-low transition-colors cursor-pointer relative focus:outline-none focus:bg-surface-container-low"
+                       [class.bg-primary-container/10]="!note.isRead">
+                    @if (!note.isRead) {
+                      <span class="absolute left-1 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-full"></span>
+                    }
+                    <h4 class="text-sm font-bold text-on-surface mb-1 flex items-center gap-2">
+                      {{note.title}}
+                      @if (!note.isRead) {
+                        <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+                      }
+                    </h4>
+                    <p class="text-xs text-on-surface-variant line-clamp-2 mb-2">{{note.message}}</p>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/40">
+                      {{note.createdAt | date:'dd/MM/yyyy HH:mm'}}
+                    </span>
+                  </div>
+                } @empty {
+                  <div class="p-8 text-center text-on-surface-variant italic text-sm">
+                    Nenhuma notificação por aqui.
+                  </div>
+                }
+              </div>
+              @if (notifications().length > 0) {
+                <div class="p-3 text-center border-t border-outline-variant/10">
+                  <button (click)="isNotificationOpen.set(false)" class="text-[10px] font-bold uppercase tracking-widest text-primary hover:underline">Fechar</button>
+                </div>
+              }
+            </div>
+          }
+        </div>
+        <button (click)="logout()" class="flex items-center gap-2 px-4 py-2 hover:bg-surface-container-low transition-colors rounded-lg text-sm font-bold">
+          <mat-icon>logout</mat-icon> Sair
+        </button>
+      </div>
+    </header>
+  }
+
+  <!-- Sidebar Overlay (Mobile) -->
+  @if (isSidebarOpen() && isLoggedIn()) {
+    <div (click)="closeSidebar()" (keydown.enter)="closeSidebar()" tabindex="0" class="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"></div>
+  }
+
+  <!-- Sidebar -->
+  @if (isLoggedIn()) {
+    <aside [class.translate-x-0]="isSidebarOpen()" [class.-translate-x-full]="!isSidebarOpen()" 
+           class="fixed left-0 top-0 h-full w-64 flex flex-col p-4 pt-20 bg-surface-container-low font-sans text-sm font-medium tracking-wide border-r border-outline-variant/10 z-40 transition-transform duration-300 md:translate-x-0">
+      <div class="flex items-center gap-3 px-2 mb-8">
+        <div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center text-on-primary overflow-hidden">
+          @if (profileImageUrl) {
+            <img [src]="profileImageUrl" alt="Profile" class="w-full h-full object-cover" referrerpolicy="no-referrer">
+          } @else {
+            <mat-icon class="text-primary text-sm flex items-center justify-center h-full w-full">person</mat-icon>
+          }
+        </div>
+        <div class="overflow-hidden">
+          <p class="text-primary font-bold leading-tight truncate" [title]="getUserEmail()">{{ getUserEmail() }}</p>
+          <p class="text-[10px] text-on-surface-variant uppercase tracking-widest">
+            {{ getUserRole() === 'admin' ? 'Administrador' : (getUserRole() === 'manager' ? 'Gerente' : 'Operador') }}
+          </p>
+        </div>
+      </div>
+      <nav class="space-y-1 flex-1">
+        @for (item of menuItems; track item.path) {
+          @if (item.roles.includes(getUserRole())) {
+            <a [routerLink]="item.path" (click)="closeSidebar()" routerLinkActive="bg-white text-primary shadow-sm" [routerLinkActiveOptions]="{exact: item.path === '/'}" class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-md transition-all duration-200">
+              <mat-icon class="text-lg">{{ item.icon }}</mat-icon> {{ item.label }}
+            </a>
+          }
+        }
+      </nav>
+      
+      <!-- App Version -->
+      <div class="px-3 py-4 mt-auto border-t border-outline-variant/5">
+        <div class="flex items-center gap-2 text-on-surface-variant/60">
+          <mat-icon class="text-sm">info</mat-icon>
+          <span class="text-[10px] font-bold uppercase tracking-widest">Versão {{ appVersion() }}</span>
+        </div>
+      </div>
+    </aside>
+  }
+
+  <!-- Main Content -->
+  <main [class.md:ml-64]="isLoggedIn()" [class.mt-16]="isLoggedIn()" class="p-4 md:p-10 pb-24 min-h-screen">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer -->
+  @if (isLoggedIn()) {
+    <footer class="fixed bottom-0 right-0 left-0 md:left-64 flex flex-col md:flex-row justify-between items-center px-4 md:px-8 py-3 bg-white border-t border-outline-variant/10 z-40 gap-2">
+      <p class="font-sans text-[10px] uppercase tracking-widest text-on-surface-variant text-center md:text-left">© {{ currentYear }} TagToTable. todos os direitos reservados</p>
+      <div class="flex items-center gap-2 text-on-surface-variant/40">
+        <mat-icon class="text-xs">info</mat-icon>
+        <span class="text-[10px] font-bold uppercase tracking-widest">v{{ appVersion() }}</span>
+      </div>
+    </footer>
+  }
+</div>
