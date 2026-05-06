@@ -1,5 +1,6 @@
 {
-  "name": "TagToTable",
+  "name": "TagToTable2",
   "description": "Enterprise XML to Excel transformer with architectural precision.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": []
 }
