@@ -18,7 +18,7 @@ import packageInfo from '../../package.json';
             <mat-icon class="text-primary text-3xl">lock</mat-icon>
           </div>
           <h1 class="text-2xl font-headline font-extrabold text-primary tracking-tight">Bem-vindo de volta</h1>
-          <p class="text-on-surface-variant text-sm">Acesse sua conta TagToTable</p>
+          <p class="text-on-surface-variant text-sm">Acesse sua conta TagToTable2</p>
         </div>
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-6">
